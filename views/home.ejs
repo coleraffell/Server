@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Home Page | Node Auth</title>
+    <link rel="stylesheet" href="/styleHome.css">
+</head>
+<body>
+    <!-- Side Bar -->
+    <div class="sidebar">
+        <form action="/logout" method="POST">
+            <button>Logout</button>
+        </form>
+    </div>
+
+    <!-- Main feed starts -->
+
+    <div class="feed">
+        <div class="feed_header">
+            <h3>Welcome, <%- username%></h3>
+        </div>
+
+        <!-- Post box starts -->
+
+        <div class="postBox">
+            <form action="/home" method="POST">
+                <div class="postBox_input">
+                    <img src="avatar.png"
+                     alt="Avatar"
+                     />
+                    <input type="text" placeholder="What's on your mind?" name="post" />
+                </div>
+                <button class="postBox_postButton">Post</button>
+            </form>
+        </div>
+
+        <!-- Post box ends -->
+
+        <!-- Posts start -->
+
+        <div class="postBody">
+
+            <%postList.forEach(post => {%>
+
+            <div class="post_avatar">
+                <img src="avatar.png" alt="Avatar" />
+                <div class="postHeader">
+                    <div class="postHeaderText">
+                        <h3>
+                            <%= post.name %>
+                            <span class="postHeaderSpecial"></span>
+                        </h3>
+                    </div>
+                    <div class="postHeaderDescription">
+                        <p><%= post.post %></p>
+                    </div>
+                    <!-- Image here if needed -->
+                </div>
+            </div>
+            <%})%>
+        </div>
+
+        <!-- Posts end -->
+
+
+    </div>
+</body>
+</html>

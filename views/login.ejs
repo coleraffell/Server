@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login | Node Auth</title>
+    <link rel="stylesheet" href="/styleLogin.css">
+</head>
+<body>
+    <div class="page-title">
+        <h1>Cookie Hub</h1>
+    </div>
+    <div class="login-form">
+        <h3>Login</h3>
+        <form action="/login" method="POST">
+            <div class="input-group">
+                <label for="email">Email:</label>
+                <span></span>
+                <input type="email" name="email" />
+            </div>
+            <div class="input-group">
+                <label for="password">Password:</label>
+                <span></span>
+                <input type="password" name="password" />
+            </div>
+            <input type="submit" value="Login">
+        </form>
+        <div class="signup_link">
+            Not a member? <a href="/register">Signup</a>
+        </div>
+    </div>
+</body>
+</html>

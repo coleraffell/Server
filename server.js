@@ -168,7 +168,7 @@ app.get("/home", isAuthenticated, (req, res) => {
 
     userPosts.find().sort({ _id: -1 }).then((result) => {
         res.render('home', {
-            username: "Cole",
+            username: req.session.username,
             postList: result
         })
     })

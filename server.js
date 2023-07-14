@@ -12,6 +12,12 @@ var rsa = require("node-rsa");
 var path = require('path');
 
 
+app.set("view engine", "ejs");
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json()) 
+app.use(express.static(path.join(__dirname, 'stylesheets')));
+
+
 console.log("\n--------------------------");
 
 mongoose.set('strictQuery', true);
@@ -25,13 +31,7 @@ async function connect() {
     }
 }
 
-
 connect();
-
-app.set("view engine", "ejs");
-app.use(express.urlencoded({ extended: true }));
-app.use(express.json()) // for parsing application/json
-app.use(express.static(path.join(__dirname, 'stylesheets')));
 
 const store = new mongoDBSession({
     uri: mongoUri,
@@ -64,10 +64,8 @@ function generateKeys() {
     return { publicKey, privateKey };
 };
 
-// Public key has to be constant 
 app.get("/", (req, res) => {
 
-    //res.render("landing");
     res.redirect("\login");
     console.log("\nSession ID: " + req.session.id);    
 });
@@ -92,27 +90,12 @@ app.post("/login", async (req, res) => {
         return res.redirect('/login');
     }
 
-    console.log("\nUsername: " + user.username + " logged in");
     req.session.email = email;
     req.session.username = user.username;
-    //req.session.isAuth = true;
+    req.session.isAuth = true;
 
-    // ----------- KEYS -----------
-
-    // Generate Keys is a must when joining server
-    let keys = generateKeys();
-    let pubKey = keys.publicKey,
-        privKey = keys.privateKey;
-
-    req.session.publicKey = pubKey;
-    req.session.privateKey = privKey;
-
-    let key_private = new rsa(req.session.privateKey);
-    req.session.encryptedSession = key_private.encryptPrivate(req.session.id);
-
-    //console.log("\n" + privKey);
-
-    res.redirect('keys');
+    console.log("\nUsername: " + user.username + " logged in");
+    res.redirect('home');
 });
 
 app.get("/register", (req, res) => {
@@ -127,19 +110,11 @@ app.post("/register", async (req, res) => {
         return res.redirect('/register');
     } else { 
         const hashedPassword = await bcrypt.hash(password, 12);
-
-        /*
-        let keys = generateKeys();
-        let pubKey = keys.publicKey,
-            privKey = keys.privateKey;
-        */
         
         user = new userModel({
             username,
             email,
             password: hashedPassword,
-            //publicKey: pubKey,
-            //privateKey: privKey,
         });
 
         await user.save();
@@ -148,6 +123,7 @@ app.post("/register", async (req, res) => {
     }
 });
 
+/*
 app.get("/keys", (req, res) => {
 
     res.render('keys');
@@ -186,20 +162,19 @@ app.post("/keys", async (req, res) => {
         res.redirect('login');
     }
 });
+*/
 
 app.get("/home", isAuthenticated, (req, res) => {
 
-    if (req.session.enterKey) {
-        userPosts.find({}, function (err, posts) {
-            res.render('home', {
-                username: req.session.username,
-                postList: posts
-            });
-        }).sort({ _id: -1 });
-    } else {
-        res.redirect('keys');
-    } 
-    req.session.enterKey = false;
+    userPosts.find().sort({ _id: -1 }).then((result) => {
+        res.render('home', {
+            username: "Cole",
+            postList: result
+        })
+    })
+    .catch((err) => {
+        console.log(err);
+    });
 });
 
 app.post("/home", async (req, res) => {
@@ -214,12 +189,6 @@ app.post("/home", async (req, res) => {
     await userPost.save();
     console.log("\nNew post created: \n\n" + name + "\n" + post);
     res.redirect("/home");
-});
-
-
-app.get("/dashboard", isAuthenticated, (req, res) => {
-
-    res.redirect('keys');
 });
 
 app.post('/logout', (req, res) => {

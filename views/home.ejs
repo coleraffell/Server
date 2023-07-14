@@ -38,16 +38,17 @@
         <!-- Post box ends -->
 
         <!-- Posts start -->
+    
 
         <div class="postBody">
 
-            <%postList.forEach(post => {%>
+            <% postList.forEach(post => {%>
 
             <div class="post_avatar">
                 <img src="avatar.png" alt="Avatar" />
                 <div class="postHeader">
-                    <div class="postHeaderText">
-                        <h3>
+                   <div class="postHeaderText">
+                       <h3>
                             <%= post.name %>
                             <span class="postHeaderSpecial"></span>
                         </h3>
@@ -55,10 +56,12 @@
                     <div class="postHeaderDescription">
                         <p><%= post.post %></p>
                     </div>
-                    <!-- Image here if needed -->
-                </div>
+                        <!-- Image here if needed -->
+                 </div>
             </div>
+
             <%})%>
+                
         </div>
 
         <!-- Posts end -->

@@ -15,7 +15,7 @@ var path = require('path');
 app.set("view engine", "ejs");
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json()) 
-app.use(express.static(path.join(__dirname, 'stylesheets')));
+app.use(express.static(path.join(__dirname)));
 
 
 console.log("\n--------------------------");
@@ -123,52 +123,15 @@ app.post("/register", async (req, res) => {
     }
 });
 
-/*
-app.get("/keys", (req, res) => {
-
-    res.render('keys');
-    console.log("\nPrivate Key: " + req.session.privateKey);
-    console.log("\nEncrypted cookie: " + req.session.encryptedSession);
+app.get("/feed", (req, res) => {
+    res.render('feed');
 });
 
-app.post("/keys", async (req, res) => {
-
-    const { sessionToken, privateKey } = req.body;
-
-    var authenticated = false;
-    
-    let key_public = new rsa(req.session.publicKey);
-
-    try {
-        //let key_private = new rsa(req.session.privateKey);
-        let key_private = new rsa(privateKey);
-        req.session.encryptedSession = key_private.encryptPrivate(req.session.id);
-        authenticated = true;
-    } catch (err) {
-        console.log("Error with your private key");
-        authenticated = false;
-    }
-
-    if (authenticated) {
-        req.session.decryptedSession = key_public.decryptPublic(req.session.encryptedSession);
-        console.log("\nDecrypted successfully: " + req.session.decryptedSession);
-        req.session.isAuth = true;
-        req.session.enterKey = true;
-        res.redirect('home');
-    } else {
-        console.log("\nYou are not the owner of this session cookie..")
-        // Error upon any wrong cookie decryption is sign out
-        req.session.isAuth = false;
-        res.redirect('login');
-    }
-});
-*/
-
-app.get("/home", isAuthenticated, (req, res) => {
+app.get("/home", (req, res) => {
 
     userPosts.find().sort({ _id: -1 }).then((result) => {
         res.render('home', {
-            username: req.session.username,
+            username: "Cole",
             postList: result
         })
     })

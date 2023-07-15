@@ -4,9 +4,23 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Home Page | Node Auth</title>
-    <link rel="stylesheet" href="/styleHome.css">
+    <link rel="stylesheet" href="stylesheets/styleHome.css">
 </head>
-<body>
+
+<body id="nav">
+
+    <!-- Navigation Bar -->
+
+    <header class="header-main">
+        <div></div>
+        <nav></nav>
+        <div></div>
+    </header>
+
+</body>
+
+<body id="main">
+
     <!-- Side Bar -->
     <div class="sidebar">
         <form action="/logout" method="POST">
@@ -66,7 +80,16 @@
 
         <!-- Posts end -->
 
-
     </div>
+
+
+    <!-- Side Bar -->
+
+    <div class="sidebar">
+        <form action="/logout" method="POST">
+            <button>Logout</button>
+        </form>
+    </div>
+
 </body>
 </html>
